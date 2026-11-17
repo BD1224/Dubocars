@@ -1,19 +1,19 @@
 // PURE booking logic: creating a new booking, side-by-side overlap layout, applying realtime changes.
 import type { Booking, BookingChange } from "./types.ts";
-import { atMinutes, dayKeyOf, STEP_MIN } from "./time.ts";
+import { atMinutes, dayKeyOf, DAY_END_MIN, DEFAULT_LENGTH_MIN } from "./time.ts";
 import type { DayKey } from "./time.ts";
 
 /** A booking's horizontal slot inside its car column: column `col` of `cols`. */
 export type Placement = { col: number; cols: number };
 
-/** A new STEP_MIN-long booking with a client-generated id. */
+/** A new DEFAULT_LENGTH_MIN-long booking (cut off at midnight) with a client-generated id. */
 export function newBooking(args: { carId: string; userId: string; day: DayKey; startMin: number }): Booking {
   return {
     id: crypto.randomUUID(),
     car_id: args.carId,
     user_id: args.userId,
     starts_at: atMinutes(args.day, args.startMin).toISOString(),
-    ends_at: atMinutes(args.day, args.startMin + STEP_MIN).toISOString(),
+    ends_at: atMinutes(args.day, Math.min(args.startMin + DEFAULT_LENGTH_MIN, DAY_END_MIN)).toISOString(),
     note: null,
   };
 }

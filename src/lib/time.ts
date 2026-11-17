@@ -2,7 +2,8 @@
 
 export type DayKey = string;
 
-export const STEP_MIN = 30;
+export const STEP_MIN = 15; // tap snapping, picker increments, shortest booking
+export const DEFAULT_LENGTH_MIN = 30; // length of a newly tapped booking
 export const DAY_START_MIN = 6 * 60; // 6:00 AM
 export const DAY_END_MIN = 24 * 60; // midnight (end of day)
 export const HOUR_PX = 64; // grid height of one hour
@@ -39,7 +40,7 @@ export function minutesInDay(day: DayKey, time: string | Date): number {
   return date.getHours() * 60 + date.getMinutes();
 }
 
-/** Floor to the 30-min slot containing `minutes`, clamped to [DAY_START_MIN, DAY_END_MIN - STEP_MIN]. */
+/** Floor to the STEP_MIN slot containing `minutes`, clamped to [DAY_START_MIN, DAY_END_MIN - STEP_MIN]. */
 export function snapToSlot(minutes: number): number {
   const floored = Math.floor(minutes / STEP_MIN) * STEP_MIN;
   return Math.min(Math.max(floored, DAY_START_MIN), DAY_END_MIN - STEP_MIN);

@@ -110,7 +110,7 @@ Name-only login isn't real security: anyone who knows a name can log in as that 
 
 1. **Overlaps allowed.** Bookings on the same car may overlap. Overlapping blocks sit side by side within the car column, each at a narrower width, so all of them stay visible and tappable (Google Calendar style). Remove the overlap error message.
 2. **Ownership.** The logged-in user can edit or delete only their own bookings. Everyone else's open read-only (name, time, note). Enforce this in the UI.
-3. **Time step.** 30 minutes. Tapping snaps to the nearest 30-min slot, the default length is 30 min, and pickers use 30-min increments.
+3. **Time step.** 15 minutes. Tapping snaps to the 15-min slot you tapped, pickers use 15-min increments, and the shortest booking is 15 min. A new booking defaults to 30 min.
 4. **Visible hours.** 6:00 AM to 12:00 AM (midnight). Bookings must start at or after 6 AM and end by midnight.
 5. **Single-day only.** A booking starts and ends on the same day; there are no multi-day bookings. The edit sheet has no date-change for the end time.
 

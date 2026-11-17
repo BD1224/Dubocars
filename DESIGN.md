@@ -44,7 +44,7 @@ supabase/schema.sql      Paste into the Supabase SQL editor
 - **Day = `DayKey` string `"YYYY-MM-DD"` in local time.** No Date objects in React state.
 - **Time inside a day = minutes since local midnight** (360 = 6:00 AM, 1440 = midnight end).
   Converted to ISO `timestamptz` only at the edges (`atMinutes`, `minutesInDay`).
-- **Constants:** step 30 min, visible 6:00–24:00, `HOUR_PX = 64`.
+- **Constants:** step 15 min (`STEP_MIN`), new bookings default to 30 min (`DEFAULT_LENGTH_MIN`), visible 6:00–24:00, `HOUR_PX = 64`.
 - **Booking ids are made on the client** (`crypto.randomUUID()`). Optimistic insert and the realtime
   echo of the same row are then the same id → upsert is idempotent. No temp-id bookkeeping.
 - **Lowest-friction create:** tapping an empty slot *immediately inserts* a 30-min booking for me

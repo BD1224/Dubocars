@@ -3,7 +3,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Booking, BookingPatch, Car, User } from "@/lib/types";
-import { atMinutes, formatRange, formatTime, minutesInDay, moveStart, slotOptions, DAY_END_MIN } from "@/lib/time";
+import { atMinutes, formatRange, formatTime, minutesInDay, moveStart, slotOptions, DAY_END_MIN, DAY_START_MIN, STEP_MIN } from "@/lib/time";
 import type { DayKey } from "@/lib/time";
 import Sheet from "./Sheet";
 
@@ -19,6 +19,7 @@ type Props = {
 };
 
 const DURATIONS = [
+  { label: "15m", min: 15 },
   { label: "30m", min: 30 },
   { label: "1h", min: 60 },
   { label: "1.5h", min: 90 },
@@ -164,7 +165,7 @@ export default function BookingSheet({ booking, day, cars, owner, canEdit, onCha
                   patchTimes(next.start, next.end);
                 }}
               >
-                {slotOptions(360, 1410).map((m) => (
+                {slotOptions(DAY_START_MIN, DAY_END_MIN - STEP_MIN).map((m) => (
                   <option key={m} value={m}>
                     {formatTime(m)}
                   </option>
@@ -178,7 +179,7 @@ export default function BookingSheet({ booking, day, cars, owner, canEdit, onCha
                 value={end}
                 onChange={(e) => patchTimes(start, Number(e.target.value))}
               >
-                {slotOptions(start + 30, DAY_END_MIN).map((m) => (
+                {slotOptions(start + STEP_MIN, DAY_END_MIN).map((m) => (
                   <option key={m} value={m}>
                     {formatTime(m)}
                   </option>

@@ -24,7 +24,8 @@ export default function BookingBlock({ booking, day, user, placement, onOpen }: 
   const top = minutesToPx(start);
   const height = Math.max(minutesToPx(end) - top - 2, 4);
   const range = formatRange(start, end);
-  const short = end - start <= 30;
+  const short = end - start <= 30; // one line: "Ben · 2:00–2:30 PM"
+  const tiny = end - start <= 15; // 15-min blocks are ~14px tall: no vertical padding
   const { col, cols } = placement;
 
   return (
@@ -34,7 +35,7 @@ export default function BookingBlock({ booking, day, user, placement, onOpen }: 
         e.stopPropagation();
         onOpen(booking.id);
       }}
-      className="block-in absolute overflow-hidden rounded-[10px] px-2 py-1 text-left text-[12px] leading-tight text-label"
+      className={`block-in absolute overflow-hidden rounded-[10px] px-2 text-left text-[12px] leading-tight text-label ${tiny ? "py-0 text-[11px] leading-[14px]" : "py-1"}`}
       style={{
         top,
         height,

@@ -13,6 +13,11 @@ function mk(id: string, startMin: number, endMin: number, day = DAY): Booking {
   };
 }
 
+test("newBooking near midnight is cut off at midnight", () => {
+  const b = newBooking({ carId: "c1", userId: "u1", day: DAY, startMin: 1425 });
+  assert.equal(new Date(b.ends_at).getTime(), new Date(2026, 10, 17, 0, 0).getTime());
+});
+
 test("newBooking makes a 30-min booking with a fresh id", () => {
   const a = newBooking({ carId: "c1", userId: "u1", day: DAY, startMin: 840 });
   const b = newBooking({ carId: "c1", userId: "u1", day: DAY, startMin: 840 });

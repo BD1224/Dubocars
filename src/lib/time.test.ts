@@ -38,21 +38,23 @@ test("minutesInDay round-trips", () => {
 
 test("snapToSlot floors and clamps", () => {
   assert.equal(snapToSlot(371), 360);
-  assert.equal(snapToSlot(389), 360);
+  assert.equal(snapToSlot(374), 360);
+  assert.equal(snapToSlot(389), 375);
   assert.equal(snapToSlot(390), 390);
   assert.equal(snapToSlot(100), 360);
-  assert.equal(snapToSlot(1439), 1410);
-  assert.equal(snapToSlot(1440), 1410);
+  assert.equal(snapToSlot(1439), 1425);
+  assert.equal(snapToSlot(1440), 1425);
 });
 
 test("slotOptions inclusive", () => {
-  assert.deepEqual(slotOptions(360, 450), [360, 390, 420, 450]);
+  assert.deepEqual(slotOptions(360, 420), [360, 375, 390, 405, 420]);
 });
 
 test("moveStart keeps duration and clamps", () => {
   assert.deepEqual(moveStart(600, 690, 720), { start: 720, end: 810 });
   assert.deepEqual(moveStart(600, 780, 1380), { start: 1380, end: 1440 });
   assert.deepEqual(moveStart(600, 780, 1410), { start: 1410, end: 1440 });
+  assert.deepEqual(moveStart(600, 615, 1425), { start: 1425, end: 1440 });
 });
 
 test("formatTime", () => {
