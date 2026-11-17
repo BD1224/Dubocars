@@ -1,0 +1,87 @@
+/* Tailwind + iOS system color tokens (light/dark) + glass surfaces + sheet animation. */
+@import "tailwindcss";
+
+@theme inline {
+  --color-bg: var(--ios-bg);
+  --color-surface: var(--ios-surface);
+  --color-fill: var(--ios-fill);
+  --color-label: var(--ios-label);
+  --color-secondary: var(--ios-secondary);
+  --color-separator: var(--ios-separator);
+  --color-accent: #0a84ff;
+  --color-danger: var(--ios-red);
+}
+
+:root {
+  --ios-bg: #ffffff;
+  --ios-surface: #f2f2f7;
+  --ios-fill: rgba(120, 120, 128, 0.12);
+  --ios-label: #000000;
+  --ios-secondary: rgba(60, 60, 67, 0.6);
+  --ios-separator: rgba(60, 60, 67, 0.12);
+  --ios-red: #ff3b30;
+  --ios-glass: rgba(255, 255, 255, 0.72);
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ios-bg: #000000;
+    --ios-surface: #1c1c1e;
+    --ios-fill: rgba(120, 120, 128, 0.24);
+    --ios-label: #ffffff;
+    --ios-secondary: rgba(235, 235, 245, 0.6);
+    --ios-separator: rgba(84, 84, 88, 0.45);
+    --ios-red: #ff453a;
+    --ios-glass: rgba(28, 28, 30, 0.72);
+  }
+}
+
+html,
+body {
+  background: var(--ios-bg);
+  color: var(--ios-label);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}
+
+.glass {
+  background: var(--ios-glass);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+}
+
+/* Bottom sheet: iOS spring-like curve. */
+.sheet-backdrop {
+  transition: opacity 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+.sheet-backdrop[data-open="true"] {
+  opacity: 1;
+  pointer-events: auto;
+}
+.sheet-panel {
+  transition: transform 0.45s cubic-bezier(0.32, 0.72, 0, 1);
+  transform: translateY(110%);
+}
+.sheet-panel[data-open="true"] {
+  transform: translateY(0);
+}
+
+/* Booking blocks pop in gently. */
+@keyframes block-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.block-in {
+  animation: block-in 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+}

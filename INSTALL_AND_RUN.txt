@@ -1,0 +1,59 @@
+DUBOCARS: INSTALL, RUN, TEST, DEPLOY
+=====================================
+Nothing was installed for you. Run these yourself, from the project folder.
+
+0) PREREQUISITES (already on your machine: Node v24.11.0 and npm)
+   - Node 22.18+ (24 recommended); npm comes with it.
+   - A Supabase project (free tier is fine): https://supabase.com
+   - (Deploy only) A Vercel account; optional CLI: npm i -g vercel
+
+1) INSTALL DEPENDENCIES (reads package.json)
+   cd Dubocars
+   npm install
+
+   This installs:
+     runtime: next, react, react-dom, @supabase/supabase-js
+     dev:     typescript, tailwindcss, @tailwindcss/postcss, @types/node, @types/react, @types/react-dom
+   (Tests use Node's built-in test runner; no test library needed.)
+
+2) SET UP SUPABASE (one time)
+   a. Supabase dashboard → SQL Editor → New query → paste ALL of supabase/schema.sql → Run.
+   b. Table Editor: edit `users` (names/colors) and `cars` to match your family.
+   c. Project Settings → API Keys: copy the Project URL and the PUBLISHABLE key (sb_publishable_...).
+      The SECRET key (sb_secret_...) is not needed. Never put it in a NEXT_PUBLIC_ variable.
+
+3) ENVIRONMENT
+   .env.local already exists with MOCK values. Replace them:
+     NEXT_PUBLIC_SUPABASE_URL=https://<your-ref>.supabase.co
+     NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
+   (.env.example is the committed template; .env.local is git-ignored.)
+
+4) TEST AND CHECK (run all three before deploying)
+   npm test              # unit tests for time math, overlap layout, realtime merge, login matching
+   npm run typecheck     # TypeScript strict check
+   npm run build         # production build, which is what Vercel runs
+
+5) RUN LOCALLY
+   npm run dev                      # http://localhost:3000
+   npm run dev -- -H 0.0.0.0        # also reachable from your phone on the same Wi-Fi:
+                                    # http://<your-mac-ip>:3000 (find the IP: ipconfig getifaddr en0)
+
+6) MANUAL SMOKE TEST (5 minutes, two browsers, e.g. Safari + Chrome or phone + laptop)
+   [ ] Log in as "benny" (lowercase works). Reload → still logged in.
+   [ ] Type an unknown name → friendly error. Set a user paused=true in Supabase → can't log in.
+   [ ] Tap an empty slot → a 30-min block appears instantly, the sheet opens, pill shows Saving… → Saved ✓.
+   [ ] Check the Supabase `bookings` table: the row is there.
+   [ ] Tap a duration chip / change end / car / note → saved; the other browser updates without refresh.
+   [ ] Create an overlapping booking on the same car → both show side by side.
+   [ ] Log in as Rebeca in the other browser → Benny's booking opens read-only.
+   [ ] Swipe left/right and use ‹ › to change days; calendar button → pick a date months ahead.
+   [ ] Delete your booking → it disappears in both browsers.
+   [ ] Toggle the OS dark mode → the app follows.
+
+7) DEPLOY TO VERCEL
+   Option A (dashboard): push to GitHub → vercel.com → Add New Project → import the repo →
+     add the two NEXT_PUBLIC_ env vars → Deploy.
+   Option B (CLI): vercel        (first time, links the project)
+                   vercel env add NEXT_PUBLIC_SUPABASE_URL
+                   vercel env add NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+                   vercel --prod
