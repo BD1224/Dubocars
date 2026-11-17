@@ -53,6 +53,8 @@ export default function BookingBlock({ booking, day, user, placement, onOpen }: 
         <>
           <div className="truncate font-semibold">{name}</div>
           <div className="truncate">{range}</div>
+          {/* Note preview: only blocks of 1h+ have room for a third line. */}
+          {booking.note && end - start >= 60 && <div className="truncate opacity-70">{booking.note}</div>}
         </>
       )}
     </button>
